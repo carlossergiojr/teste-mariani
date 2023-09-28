@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  web:
+    image: nginx:1.14.2-alpine
+    restart: always
+    volumes:
+      - ./nginx/public_html:/usr/share/nginx/html/
+      - ./nginx/conf.d:/etc/nginx/conf.d/
+    ports:
+      - 80:80 
+    networks:
+      - mynetwork
+  solr:
+    image: solr:9.0.0
+    ports:
+     - "8983:8983"
+    volumes:
+      - data:/var/solr
+    command:
+      - solr-precreate
+      - mexico
+    networks:
+      - mynetwork
+volumes:
+  data:
+
+networks:
+  mynetwork:
